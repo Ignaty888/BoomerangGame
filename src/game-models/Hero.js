@@ -1,7 +1,8 @@
 // Наш герой.
+const readlineSync = require('readline-sync');
 
 class Hero {
-  constructor({ position }) {
+  constructor(position= 5) {
     this.skin = '🤠'; // можете использовать любые emoji '💃'
     this.position = position;
   }
