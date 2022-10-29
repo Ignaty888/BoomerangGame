@@ -11,9 +11,9 @@ const keypress = require('keypress');
 
 function runInteractiveConsole(hero, boom) {
   const keyboard = {
-    q: () => hero.moveRight(),
-    w: () => boom.start=true,
-    e: () => console.log('e'),
+    q: () => { hero.moveRight(); boom.moveRight(); },
+    w: () => boom.start = true,
+    e: () => { hero.moveLeft(); boom.moveLeft(); },
     r: () => console.log('r'),
     t: () => console.log('t'),
     y: () => console.log('y'),

@@ -1,5 +1,6 @@
 // Сделаем отдельный класс для отображения игры в консоли.
 const readlineSync = require('readline-sync');
+
 class View {
   render(track) {
     const yourTeamName = 'Elbrus';
