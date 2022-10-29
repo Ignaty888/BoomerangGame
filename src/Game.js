@@ -45,8 +45,8 @@ class Game {
       this.enemy = new Enemy();
     } else if (this.boom.position === this.hero.position + 1) {
       this.boom.back = false;
-      // this.boom.stop = true;
-      // this.boom.start = false;
+    } else if (this.boom.position === this.hero.position - 1) {
+      this.boom.back = false;
     }
   }
 
@@ -60,6 +60,13 @@ class Game {
       // runInteractiveConsole(this.boom);
       this.enemy.moveLeft();
       this.boom.fly();
+      if (this.boom.position === this.hero.position - 1) {
+        this.hero.boomLose();
+      } else { this.hero.skin = '🤠'; }
+      if (this.boom.position >= this.enemy.position) {
+        this.hero.pointsCheck()
+      }
+      console.log(`Ваш счет ${this.hero.points}`);
     }, 200);
   }
 }

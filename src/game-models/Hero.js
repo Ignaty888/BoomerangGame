@@ -1,10 +1,10 @@
 // Наш герой.
-const readlineSync = require('readline-sync');
 
 class Hero {
-  constructor(position= 5) {
+  constructor(position = 5) {
     this.skin = '🤠'; // можете использовать любые emoji '💃'
     this.position = position;
+    this.points = 0;
   }
 
   moveLeft() {
@@ -20,6 +20,15 @@ class Hero {
   attack() {
     // Атакуем.
     this.boomerang.fly();
+  }
+
+  boomLose() {
+    this.skin = '💀';
+    console.log('Вы потеряли оружие');
+  }
+
+  pointsCheck() {
+    this.points += 1;
   }
 
   die() {

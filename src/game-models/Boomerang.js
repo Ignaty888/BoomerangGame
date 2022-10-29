@@ -20,7 +20,7 @@ class Boomerang {
   fly() {
     if (this.position <= this.enemy.position && this.back === false && this.start === true) {
       this.moveRight();
-    } else if (this.back === true ) {
+    } else if (this.back === true) {
       this.moveLeft();
     }
   }
