@@ -93,7 +93,7 @@ class Game {
         this.base();
       }
       console.log(`${this.name}, ваш счет: ${this.hero.points}`);
-    }, 40);
+    }, 100);
   }
 }
 module.exports = Game;
