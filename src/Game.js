@@ -8,7 +8,7 @@ const Enemy = require('./game-models/Enemy');
 const View = require('./View');
 const Boomerang = require('./game-models/Boomerang');
 const runInteractiveConsole = require('./keyboard');
-
+const { User } = require('../db/models');
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
 
@@ -24,6 +24,7 @@ class Game {
     // this.key = new Key();
     this.track = [];
     this.regenerateTrack();
+    this.name = process.argv[2];
   }
 
   regenerateTrack() {
@@ -35,7 +36,28 @@ class Game {
     this.track[this.boom.position] = this.boom.skin;
   }
 
-  check() {
+  async base() {
+    await User.create({
+      username: this.name,
+      count: this.hero.points,
+    });
+    const table = await User.findAll({
+      raw: true,
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
+      order: [
+        ['count', 'DESC'],
+      ],
+      limit: 5,
+    });
+    console.log('Таблица лидеров:');
+    table.forEach((el, i) => console.log(`позиция:${i + 1} имя: ${el.username} очки: ${el.count}`));
+
+    this.hero.die();
+  }
+
+  async check() {
     if (this.hero.position >= this.enemy.position) {
       this.hero.die();
     }
@@ -45,30 +67,33 @@ class Game {
       this.enemy = new Enemy();
     } else if (this.boom.position === this.hero.position + 1) {
       this.boom.back = false;
-    } else if (this.boom.position === this.hero.position - 1) {
+    } else if (this.boom.position === this.hero.position - 2) {
       this.boom.back = false;
     }
   }
 
-  play() {
+  async play() {
     runInteractiveConsole(this.hero, this.boom);
-    setInterval(() => {
-      // Let's play!
+
+    const stop = setInterval(() => {
+      // Let's play
       this.check();
       this.regenerateTrack();
       this.view.render(this.track);
-      // runInteractiveConsole(this.boom);
       this.enemy.moveLeft();
       this.boom.fly();
-      if (this.boom.position === this.hero.position - 1) {
+      if (this.boom.position <= this.hero.position - 1) {
         this.hero.boomLose();
       } else { this.hero.skin = '🤠'; }
       if (this.boom.position >= this.enemy.position) {
-        this.hero.pointsCheck()
+        this.hero.pointsCheck();
       }
-      console.log(`Ваш счет ${this.hero.points}`);
-    }, 200);
+      if (this.hero.position >= this.enemy.position) {
+        clearInterval(stop);
+        this.base();
+      }
+      console.log(`${this.name}, ваш счет: ${this.hero.points}`);
+    }, 40);
   }
 }
-
 module.exports = Game;

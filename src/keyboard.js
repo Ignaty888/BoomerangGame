@@ -11,10 +11,10 @@ const keypress = require('keypress');
 
 function runInteractiveConsole(hero, boom) {
   const keyboard = {
-    q: () => { hero.moveRight(); boom.moveRight(); },
-    w: () => boom.start = true,
-    e: () => { hero.moveLeft(); boom.moveLeft(); },
-    r: () => console.log('r'),
+    q: () => { hero.moveRight(); if (boom.position >= hero.position) { boom.moveRight(); } },
+    w: () => { if (boom.position > hero.position) { boom.start = true; } },
+    e: () => { hero.moveLeft(); if (boom.position - 2 >= hero.position) { boom.moveLeft(); } },
+    r: () => console.log('t'),
     t: () => console.log('t'),
     y: () => console.log('y'),
   };
