@@ -23,12 +23,13 @@ class Hero {
   }
 
   boomLose() {
-    this.skin = '💀';
+    this.skin = '😱';
     console.log('Вы потеряли оружие');
   }
 
   pointsCheck() {
     this.points += 1;
+    return this.points
   }
 
   die() {
